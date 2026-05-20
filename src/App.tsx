@@ -12,8 +12,10 @@ function App() {
   const [error, setError] = useState<string | null>(null);
 
   // 本地 Java Spring Boot 的網址
-  const BACKEND_URL = "http://localhost:8080/api/helpers";
-
+const BACKEND_URL = import.meta.env.VITE_API_URL 
+  ? `${import.meta.env.VITE_API_URL}/api/helpers` 
+  : "http://localhost:8080/api/helpers";
+  
   useEffect(() => {
     // 向後端大腦索取外傭資料
     fetch(BACKEND_URL)
