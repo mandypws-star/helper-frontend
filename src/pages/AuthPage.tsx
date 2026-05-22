@@ -1,64 +1,51 @@
-import React from 'react';
+import React from 'react'; // 👈 1. 確保開頭有引入 React，這樣第 45 行的 React.CSSProperties 才不會報錯
 
 export const AuthPage: React.FC = () => {
-  
-  const handleGoogleLogin = () => {
-    // 實際開發時，這裡會導向後端 Spring Boot 的 OAuth 端點
-    // 例如：window.location.href = `${process.env.VITE_BACKEND_URL}/oauth2/authorization/google`;
-    console.log('Redirecting to Google OAuth...');
-  };
+  const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || 'http://localhost:8080';
 
-  const handleFacebookLogin = () => {
-    // window.location.href = `${process.env.VITE_BACKEND_URL}/oauth2/authorization/facebook`;
-    console.log('Redirecting to Facebook OAuth...');
+  const handleLogin = (provider: 'google' | 'facebook') => {
+    window.location.href = `${BACKEND_URL}/oauth2/authorization/${provider}`;
   };
 
   return (
     <div style={styles.container}>
       <div style={styles.card}>
-        <h2 style={styles.title}>Welcome to HelperPlatform</h2>
-        <p style={styles.subtitle}>搵外傭 / 搵好工，一鍵快捷登入</p>
-        
-        <div style={styles.buttonContainer}>
-          {/* Google 登入按鈕 */}
-          <button onClick={handleGoogleLogin} style={{ ...styles.btn, ...styles.btnGoogle }}>
-            <img 
-              src="https://upload.wikimedia.org/wikipedia/commons/c/c1/Google_%22G%22_logo.svg" 
-              alt="Google" 
-              style={styles.icon} 
-            />
-            Continue with Google
-          </button>
+        <h2 style={styles.header}>Welcome to HelperPlatform</h2>
+        <p style={styles.subheader}>搵外傭 / 搵好工，一鍵快捷登入</p>
 
-          {/* Facebook 登入按鈕 */}
-          <button onClick={handleFacebookLogin} style={{ ...styles.btn, ...styles.btnFacebook }}>
-            <img 
-              src="https://upload.wikimedia.org/wikipedia/commons/b/b9/2023_Facebook_icon.svg" 
-              alt="Facebook" 
-              style={styles.icon} 
-            />
-            Continue with Facebook
-          </button>
-        </div>
+        {/* Google 登入按鈕 */}
+        <button 
+          onClick={() => handleLogin('google')} 
+          style={{ ...styles.btn, backgroundColor: '#ffffff', color: '#757575', border: '1px solid #ddd' }}
+        >
+          <img 
+            src="https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logomark.svg" 
+            alt="Google" 
+            style={{ width: '18px', marginRight: '10px' }} // 👈 2. 確保 marginRight 拼寫正確且外層有包好雙大括號
+          />
+          Continue with Google
+        </button>
 
-        <p style={styles.footerText}>
-          登入即代表您同意我們的服務條款與隱私權政策。
-        </p>
+        {/* Facebook 登入按鈕 */}
+        <button 
+          onClick={() => handleLogin('facebook')} 
+          style={{ ...styles.btn, backgroundColor: '#1877f2', color: '#ffffff', border: 'none' }}
+        >
+          Continue with Facebook
+        </button>
+
+        <p style={styles.footer}>登入即代表您同意我們的服務條款與隱私政策</p>
       </div>
     </div>
   );
 };
 
-// 簡單優雅的 Inline Styles，你之後可以換成 Tailwind 或 CSS Modules
+// 💡 這裡因為有了 import React，型態定義就不會再報紅線了
 const styles: Record<string, React.CSSProperties> = {
-  container: { display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh', backgroundColor: '#f5f7fb', fontFamily: 'sans-serif' },
-  card: { padding: '40px', borderRadius: '16px', backgroundColor: '#ffffff', boxShadow: '0 4px 20px rgba(0,0,0,0.08)', width: '100%', maxWidth: '400px', textAlign: 'center' },
-  title: { margin: '0 0 8px 0', fontSize: '24px', color: '#1a1a1a', fontWeight: 'bold' },
-  subtitle: { margin: '0 0 32px 0', fontSize: '14px', color: '#666' },
-  buttonContainer: { display: 'flex', flexDirection: 'column', gap: '16px' },
-  btn: { display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '12px', width: '100%', padding: '12px', borderRadius: '8px', border: '1px solid #e0e0e0', fontSize: '16px', fontWeight: '600', cursor: 'pointer', transition: 'background-color 0.2s' },
-  btnGoogle: { backgroundColor: '#ffffff', color: '#3c4043' },
-  btnFacebook: { backgroundColor: '#1877F2', color: '#ffffff', border: 'none' },
-  icon: { width: '20px', height: '20px' },
-  footerText: { marginTop: '32px', fontSize: '12px', color: '#999', lineHeight: '1.5' }
+  container: { display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '100vh', backgroundColor: '#f4f6f9', fontFamily: 'sans-serif' },
+  card: { padding: '40px 30px', backgroundColor: '#fff', borderRadius: '16px', boxShadow: '0 4px 16px rgba(0,0,0,0.06)', width: '100%', maxWidth: '380px', textAlign: 'center' },
+  header: { margin: '0 0 8px 0', color: '#222', fontSize: '24px', fontWeight: 'bold', marginBottom: '8px' },
+  subheader: { margin: '0 0 32px 0', color: '#777', fontSize: '14px' },
+  btn: { display: 'flex', alignItems: 'center', justifyContent: 'center', width: '100%', padding: '12px', borderRadius: '8px', fontSize: '16px', fontWeight: '600', cursor: 'pointer', marginBottom: '14px', transition: 'opacity 0.2s' },
+  footer: { fontSize: '12px', color: '#aaa', marginTop: '20px' }
 };
