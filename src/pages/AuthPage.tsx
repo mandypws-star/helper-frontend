@@ -1,7 +1,7 @@
 import React from 'react'; // 👈 1. 確保開頭有引入 React，這樣第 45 行的 React.CSSProperties 才不會報錯
 
 export const AuthPage: React.FC = () => {
-  const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || 'http://localhost:8080';
+  const BACKEND_URL = import.meta.env.VITE_API_URL || 'http://localhost:8080';
 
   const handleLogin = (provider: 'google' | 'facebook') => {
     window.location.href = `${BACKEND_URL}/oauth2/authorization/${provider}`;
